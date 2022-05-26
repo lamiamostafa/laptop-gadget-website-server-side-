@@ -12,6 +12,10 @@ app.get('/', (req, res) => {
 
 });
 
+app.get('/product', (req, res) => {
+
+})
+
 app.listen(port, () => {
     console.log(`Doctors app listening on port ${port}`);
 })
