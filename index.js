@@ -71,6 +71,13 @@ async function run() {
             res.send(result);
 
         });
+        app.get('/order', async (req, res) => {
+            const query = {};
+            const cursor = orderCollection.find(query);
+            const orders = await cursor.toArray();
+            res.send(orders);
+        });
+
         app.post('/order', async (req, res) => {
             const newProduct = req.body;
             console.log("Adding your order");
@@ -78,6 +85,22 @@ async function run() {
             res.send(result);
 
         });
+        app.get('/myorder', verifyJWT, async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const cursor = orderCollection.find(query);
+            const orders = await cursor.toArray();
+            res.send(orders);
+
+        });
+
+        app.delete('/order/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productCollection.deleteOne(query);
+            res.send(result);
+        });
+
         app.post('/myProfile', async (req, res) => {
             const newProduct = req.body;
             console.log("Addingyour Information");
