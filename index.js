@@ -35,6 +35,7 @@ async function run() {
         const productCollection = client.db('manufacturer').collection('products');
         const userCollection = client.db('manufacturer').collection('users');
         const reviewCollection = client.db('manufacturer').collection('review');
+        const orderCollection = client.db('manufacturer').collection('orders');
 
         app.get('/product', async (req, res) => {
             const query = {};
@@ -67,6 +68,13 @@ async function run() {
             const newProduct = req.body;
             console.log("Adding new user");
             const result = await productCollection.insertOne(newProduct);
+            res.send(result);
+
+        });
+        app.post('/order', async (req, res) => {
+            const newProduct = req.body;
+            console.log("Adding your order");
+            const result = await orderCollection.insertOne(newProduct);
             res.send(result);
 
         });
@@ -119,6 +127,14 @@ async function run() {
             const result = await userCollection.updateOne(filter, updateDoc);
             res.send(result);
         });
+
+
+        app.get('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = await userCollection.findOne({ email: email });
+            const isUser = user.role != 'admin';
+            res.send({ user: isUser })
+        })
 
 
         app.put('/user/:email', async (req, res) => {
