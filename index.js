@@ -34,6 +34,7 @@ async function run() {
         await client.connect();
         const productCollection = client.db('manufacturer').collection('products');
         const userCollection = client.db('manufacturer').collection('users');
+        const reviewCollection = client.db('manufacturer').collection('review');
 
         app.get('/product', async (req, res) => {
             const query = {};
@@ -66,6 +67,20 @@ async function run() {
             const newProduct = req.body;
             console.log("Adding new user");
             const result = await productCollection.insertOne(newProduct);
+            res.send(result);
+
+        });
+        app.post('/myProfile', async (req, res) => {
+            const newProduct = req.body;
+            console.log("Addingyour Information");
+            const result = await userCollection.insertOne(newProduct);
+            res.send(result);
+
+        });
+        app.post('/review', async (req, res) => {
+            const newReview = req.body;
+            console.log("Addingyour Information");
+            const result = await reviewCollection.insertOne(newReview);
             res.send(result);
 
         });
