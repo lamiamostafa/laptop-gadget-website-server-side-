@@ -51,7 +51,7 @@ async function run() {
             else {
                 res.status(403).send({ message: 'forbidden' });
             }
-        }
+        };
 
 
         app.get('/product/:id', async (req, res) => {
@@ -60,6 +60,14 @@ async function run() {
             const product = await productCollection.findOne(query);
             res.send(product);
         });
+
+        app.post('/addproduct', async (req, res) => {
+            const newProduct = req.body;
+            console.log("Adding new user");
+            const result = await productCollection.insertOne(newProduct);
+            res.send(result);
+
+        })
 
         app.get('/user', verifyJWT, verifyAdmin, async (req, res) => {
             const users = await userCollection.find().toArray();
